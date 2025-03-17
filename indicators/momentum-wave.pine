@@ -1,3 +1,4 @@
+//@version=6
 indicator("Momentum Wave [ATX Lalo]", overlay=true)
 
 // EMA 1
