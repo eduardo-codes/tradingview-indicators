@@ -1,0 +1,27 @@
+//@version=6
+indicator("Momentum Wave [ATX Lalo]", overlay=true)
+
+// EMA 1
+//ema1Level = input.bool(true, title = 'EMA #1', group = 'Exponential moving average', inline = 'ema1')
+ema1Color = input(title = '', defval = color.red, group = 'Exponential moving average', inline = 'ema1')
+ema1Length = input.int(8, minval = 1, title = 'Length', group = 'Exponential moving average', inline = 'ema1')
+ema1Source = input(close, title = 'Source', group = 'Exponential moving average', inline = 'ema1')
+ema1 = ta.ema(ema1Source, ema1Length)
+
+// EMA 2
+//ema2Level = input.bool(true, title = 'EMA #2', group = 'Exponential moving average', inline = 'ema2')
+ema2Color = input(title = '', defval = color.yellow, group = 'Exponential moving average', inline = 'ema2')
+ema2Length = input.int(21, minval = 1, title = 'Length', group = 'Exponential moving average', inline = 'ema2')
+ema2Source = input(close, title = 'Source', group = 'Exponential moving average', inline = 'ema2')
+ema2 = ta.ema(ema2Source, ema2Length)
+
+// Define EMA Cloud Colors
+emaWave = input.bool(true, title = 'Wave', group = 'Momentum Wave', inline = 'emaWave')
+cloudOpacity = input.int(80, minval = 1, maxval = 100,title = 'Wave Opacity', group = 'Momentum Wave')
+cloudColor = ema1 > ema2 ? color.new(color.green, emaWave ? cloudOpacity : 100) : color.new(color.red, emaWave ? cloudOpacity : 100)
+
+plot1 = plot(ema1, title = 'EMA #1', color= ema1Color, display = display.all - display.price_scale - display.status_line)
+plot2 = plot(ema2, title = 'EMA #2', color = ema2Color, display = display.all - display.price_scale - display.status_line)
+
+// Fill EMA Wave
+fill(plot1, plot2, color=cloudColor, title = 'EMA Wave Background')
